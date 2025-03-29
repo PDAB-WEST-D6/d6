@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ms">
 <head>
@@ -94,16 +95,19 @@
     </div>
 
     <script>
-        const jsonbinUrl = "data.json"; // Ambil data dari GitHub Pages
+        const jsonbinUrl = "https://api.jsonbin.io/v3/b/67e7fbbc8a456b79667ef376";
+        const jsonbinKey = "$2a$10$0DSj6mcmj81mURdbJlhXPOs9L05nj7JLjz1Yfof2Ink9QQTplAQnS";
         const bulan = ["April", "Mei", "Jun", "Julai", "Ogos", "September", "Oktober", "November", "Disember"];
         let currentBulan = 0;
         let data = [];
 
         async function fetchData() {
             try {
-                let response = await fetch(jsonbinUrl);
+                let response = await fetch(jsonbinUrl, {
+                    headers: { "X-Master-Key": jsonbinKey }
+                });
                 let result = await response.json();
-                data = result;
+                data = result.record;
                 renderTable();
             } catch (error) {
                 console.error("Error fetching data:", error);
