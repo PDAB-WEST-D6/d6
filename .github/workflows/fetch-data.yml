@@ -1,0 +1,27 @@
+name: Fetch JSONBin Data
+
+on:
+  schedule:
+    - cron: '0 * * * *' # Jalankan setiap jam
+  workflow_dispatch: # Boleh jalankan secara manual
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Fetch JSONBin Data
+        run: |
+          curl -H "X-Master-Key: ${{ secrets.JSONBIN_KEY }}" \
+          "https://api.jsonbin.io/v3/b/67e7fbbc8a456b79667ef376" \
+          | jq '.record' > data.json
+
+      - name: Commit & Push
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add data.json
+          git commit -m "Update data.json"
+          git push
