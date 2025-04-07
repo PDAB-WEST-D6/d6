@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Kompaun Saman Lalu Lintas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-dark: #141e30;
+            --primary-light: #243b55;
+            --accent-color: #00a8ff;
+            --danger-color: #e84118;
+            --warning-color: #fbc531;
+            --success-color: #4cd137;
+            --text-color: #333333;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa, #e4e8f0);
+            color: var(--text-color);
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .header {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+            border-left: 4px solid var(--danger-color);
+        }
+        
+        .container {
+            max-width: 800px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
+        }
+        
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 600;
+            font-size: 1.5rem;
+            position: relative;
+            padding-bottom: 8px;
+            color: var(--primary-dark);
+        }
+        
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 2px;
+            background: var(--accent-color);
+        }
+        
+        .calculator-card {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            margin-bottom: 15px;
+            border-top: 3px solid var(--accent-color);
+        }
+        
+        .form-select, .form-control {
+            border: 1px solid #e0e0e0;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+        
+        .form-select:focus, .form-control:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(0, 168, 255, 0.1);
+        }
+        
+        .btn-calculate {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            width: 100%;
+            margin-bottom: 8px;
+        }
+        
+        .btn-reset {
+            background-color: var(--danger-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            width: 100%;
+        }
+        
+        .btn-add {
+            background-color: var(--success-color);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+        }
+        
+        .result-card {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border-top: 3px solid var(--danger-color);
+            text-align: center;
+        }
+        
+        .result-amount {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--danger-color);
+            margin: 10px 0;
+        }
+        
+        .selected-offenses {
+            margin-top: 12px;
+            max-height: 150px;
+            overflow-y: auto;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 8px;
+            font-size: 0.85rem;
+        }
+        
+        .selected-offense-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .selected-offense-item:last-child {
+            border-bottom: none;
+        }
+        
+        .remove-offense {
+            color: var(--danger-color);
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 0.9rem;
+        }
+        
+        .offense-selected {
+            background-color: rgba(0, 168, 255, 0.1);
+            border-left: 3px solid var(--accent-color);
+        }
+        
+        .offense-details {
+            font-size: 0.85rem;
+            text-align: left;
+            margin-top: 10px;
+        }
+        
+        .offense-group {
+            margin-bottom: 15px;
+        }
+        
+        .offense-group-title {
+            font-weight: 500;
+            color: var(--primary-dark);
+            margin-bottom: 8px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .calculation-details {
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+        
+        .calculation-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .calculation-label {
+            color: var(--primary-dark);
+        }
+        
+        .calculation-value {
+            font-weight: 500;
+        }
+        
+        .officer-split {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px dashed #e0e0e0;
+        }
+        
+        .split-result {
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-top: 5px;
+        }
+        
+        @media (max-width: 576px) {
+            .result-amount {
+                font-size: 1.5rem;
+            }
+            
+            .header h4 {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h4 class="text-center mb-0">
+                <i class="fas fa-gavel me-2"></i> Jabatan Siasatan dan Penguatkuasaan Trafik 
+            </h4>
+        </div>
+            
+        <h2><i class="fas fa-calculator me-2"></i>Kalkulator Kompaun Saman</h2>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="calculator-card">
+                    <div class="offense-group">
+                        <div class="offense-group-title">Pilih Kesalahan:</div>
+                        <select class="form-select mb-2" id="offenseType">
+                            <option value="">-- Sila Pilih Kesalahan --</option>
+                            <optgroup label="Kesalahan Lalu Lintas">
+                                <option value="300">Tidak Memiliki Lesen - RM300</option>
+                                <option value="300">Memandu Di Bawah Umur - RM300</option>
+                                <option value="300">Melebihi Had Laju - RM300</option>
+                                <option value="300">Gagal Mematuhi Tanda Lalulintas - RM300</option>
+                                <option value="300">Memandu Dalam Keadaan STRESS - RM300</option>
+                                <option value="500">Kenderaan Tidak Berada Dalam Keadaan Baik - RM500</option>
+                                <option value="300">Tidak Memakai Helmet - RM300</option>
+                                <option value="300">Bawa Lebih Penumpang - RM300</option>
+                                <option value="800">Kenderaan Tidak Berdaftar - RM800</option>
+                                <option value="300">Tiada Cukai Jalan - RM300</option>
+                                <option value="200">Lesen Tamat Tempoh - RM200</option>
+                            </optgroup>
+                            <optgroup label="Kesalahan Berat">
+                                <option value="1000">Memandu Bahaya Sehingga Kematian - RM1000</option>
+                                <option value="500">Memandu Bahaya hingga Cedera Parah - RM500</option>
+                                <option value="500">Memandu Semasa Mabuk - RM500</option>
+                                <option value="20000">Perkataan Buruk Pada Nombor Kenderaan - RM20,000</option>
+                            </optgroup>
+                            <optgroup label="Kesalahan Khas">
+                                <option value="1000">Kejar Mengejar (Amaran 1) - RM1000</option>
+                                <option value="2000">Kejar Mengejar (Amaran 2) - RM2000</option>
+                                <option value="3000">Kejar Mengejar (Amaran 3) - RM3000</option>
+                                <option value="150">Memiliki Papan Tanda Jalanraya - RM150</option>
+                                <option value="5000">Samun dengan Senjata - RM5000 + 20CS</option>
+                                <option value="1000">Membunuh Orang Awam/NPC/AI - RM1000 + 300CS</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    
+                    <div class="offense-group">
+                        <label for="quantity" class="form-label">Kuantiti:</label>
+                        <input type="number" class="form-control" id="quantity" min="1" value="1">
+                    </div>
+                    
+                    <button class="btn btn-add" id="addOffenseBtn">
+                        <i class="fas fa-plus me-1"></i>Tambah Kesalahan
+                    </button>
+                    
+                    <div id="selectedOffensesContainer" class="selected-offenses" style="display: none;">
+                        <div class="offense-group-title">Kesalahan Dipilih:</div>
+                        <div id="selectedOffensesList"></div>
+                    </div>
+                    
+                    <div class="offense-group">
+                        <label for="officers" class="form-label">Bilangan Anggota:</label>
+                        <input type="number" class="form-control" id="officers" min="1" value="1">
+                    </div>
+                    
+                    <button class="btn btn-calculate" id="calculateBtn">
+                        <i class="fas fa-calculator me-1"></i>Kira Jumlah
+                    </button>
+                    <button class="btn btn-reset" id="resetBtn">
+                        <i class="fas fa-redo me-1"></i>Set Semula
+                    </button>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="result-card">
+                    <h5><i class="fas fa-file-invoice-dollar me-1"></i>Jumlah Kompaun</h5>
+                    <div class="result-amount" id="resultAmount">RM0</div>
+                    <p class="text-muted mb-1" id="offenseDescription">Tiada kesalahan dipilih</p>
+                    <div id="multipleOffenses" style="display: none;">
+                        <small><i class="fas fa-info-circle me-1"></i><span id="offenseCount">0</span> kesalahan</small>
+                    </div>
+                    
+                    <div class="calculation-details" id="calculationDetails" style="display: none;">
+                        <div class="calculation-row">
+                            <span class="calculation-label">Jumlah Saman:</span>
+                            <span class="calculation-value" id="totalFine">RM0</span>
+                        </div>
+                        <div class="calculation-row">
+                            <span class="calculation-label">Tolak GST (10%):</span>
+                            <span class="calculation-value" id="gstDeduction">RM0</span>
+                        </div>
+                        <div class="calculation-row" style="margin-top: 8px;">
+                            <span class="calculation-label" style="font-weight: 600;">Jumlah Selepas GST:</span>
+                            <span class="calculation-value" style="font-weight: 600;" id="afterGst">RM0</span>
+                        </div>
+                        
+                        <div class="officer-split">
+                            <div class="calculation-row">
+                                <span class="calculation-label">Bahagi <span id="officersCount">1</span> Anggota:</span>
+                                <span class="calculation-value split-result" id="perOfficer">RM0</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="offenseDetails" class="offense-details"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const offenseType = document.getElementById('offenseType');
+            const quantity = document.getElementById('quantity');
+            const officers = document.getElementById('officers');
+            const calculateBtn = document.getElementById('calculateBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const addOffenseBtn = document.getElementById('addOffenseBtn');
+            const resultAmount = document.getElementById('resultAmount');
+            const offenseDescription = document.getElementById('offenseDescription');
+            const multipleOffenses = document.getElementById('multipleOffenses');
+            const offenseCount = document.getElementById('offenseCount');
+            const selectedOffensesContainer = document.getElementById('selectedOffensesContainer');
+            const selectedOffensesList = document.getElementById('selectedOffensesList');
+            const offenseDetails = document.getElementById('offenseDetails');
+            const calculationDetails = document.getElementById('calculationDetails');
+            const totalFine = document.getElementById('totalFine');
+            const gstDeduction = document.getElementById('gstDeduction');
+            const afterGst = document.getElementById('afterGst');
+            const officersCount = document.getElementById('officersCount');
+            const perOfficer = document.getElementById('perOfficer');
+            
+            let selectedOffenses = [];
+            
+            // Highlight selected offense in dropdown
+            offenseType.addEventListener('focus', function() {
+                this.classList.add('offense-selected');
+            });
+            
+            offenseType.addEventListener('blur', function() {
+                this.classList.remove('offense-selected');
+            });
+            
+            // Function to add offense to list
+            function addOffense() {
+                const selectedOption = offenseType.options[offenseType.selectedIndex];
+                const qty = parseInt(quantity.value) || 1;
+                
+                if (selectedOption.value) {
+                    const offense = {
+                        id: Date.now(),
+                        description: selectedOption.text.split(' - ')[0],
+                        amount: parseFloat(selectedOption.value),
+                        quantity: qty,
+                        fullText: selectedOption.text
+                    };
+                    
+                    selectedOffenses.push(offense);
+                    updateSelectedOffensesList();
+                    offenseType.value = '';
+                    quantity.value = 1;
+                }
+            }
+            
+            // Function to remove offense from list
+            function removeOffense(id) {
+                selectedOffenses = selectedOffenses.filter(offense => offense.id !== id);
+                updateSelectedOffensesList();
+                calculateCompound();
+            }
+            
+            // Function to update the selected offenses list
+            function updateSelectedOffensesList() {
+                selectedOffensesList.innerHTML = '';
+                
+                if (selectedOffenses.length > 0) {
+                    selectedOffensesContainer.style.display = 'block';
+                    
+                    selectedOffenses.forEach(offense => {
+                        const item = document.createElement('div');
+                        item.className = 'selected-offense-item';
+                        item.innerHTML = `
+                            <span>${offense.description} (${offense.quantity}x)</span>
+                            <span>
+                                RM${(offense.amount * offense.quantity).toLocaleString('ms-MY')}
+                                <button class="remove-offense" onclick="removeOffense(${offense.id})">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </span>
+                        `;
+                        selectedOffensesList.appendChild(item);
+                    });
+                } else {
+                    selectedOffensesContainer.style.display = 'none';
+                }
+            }
+            
+            // Function to calculate total compound
+            function calculateCompound() {
+                if (selectedOffenses.length === 0) {
+                    resultAmount.textContent = 'RM0';
+                    offenseDescription.textContent = 'Tiada kesalahan dipilih';
+                    multipleOffenses.style.display = 'none';
+                    offenseDetails.innerHTML = '';
+                    calculationDetails.style.display = 'none';
+                    return;
+                }
+                
+                let total = 0;
+                let offenseDetailsHTML = '<div class="offense-group-title">Butiran:</div><ul style="padding-left: 20px; margin-bottom: 0;">';
+                
+                selectedOffenses.forEach(offense => {
+                    const offenseTotal = offense.amount * offense.quantity;
+                    total += offenseTotal;
+                    offenseDetailsHTML += `
+                        <li>${offense.fullText} (${offense.quantity}x) - RM${offenseTotal.toLocaleString('ms-MY')}</li>
+                    `;
+                });
+                
+                offenseDetailsHTML += '</ul>';
+                
+                // Calculate GST and split
+                const gst = total * 0.1;
+                const afterGstAmount = total - gst;
+                const numOfficers = parseInt(officers.value) || 1;
+                const perOfficerAmount = afterGstAmount / numOfficers;
+                
+                // Update display
+                resultAmount.textContent = `RM${total.toLocaleString('ms-MY')}`;
+                offenseDescription.textContent = selectedOffenses.length === 1 
+                    ? selectedOffenses[0].description 
+                    : 'Pelbagai kesalahan';
+                
+                totalFine.textContent = `RM${total.toLocaleString('ms-MY')}`;
+                gstDeduction.textContent = `RM${gst.toLocaleString('ms-MY')}`;
+                afterGst.textContent = `RM${afterGstAmount.toLocaleString('ms-MY')}`;
+                officersCount.textContent = numOfficers;
+                perOfficer.textContent = `RM${perOfficerAmount.toLocaleString('ms-MY')}`;
+                
+                if (selectedOffenses.length > 1) {
+                    multipleOffenses.style.display = 'block';
+                    offenseCount.textContent = selectedOffenses.length;
+                    offenseDetails.innerHTML = offenseDetailsHTML;
+                } else {
+                    multipleOffenses.style.display = 'none';
+                    offenseDetails.innerHTML = '';
+                }
+                
+                calculationDetails.style.display = 'block';
+            }
+            
+            // Function to reset everything
+            function resetCalculator() {
+                selectedOffenses = [];
+                updateSelectedOffensesList();
+                resultAmount.textContent = 'RM0';
+                offenseDescription.textContent = 'Tiada kesalahan dipilih';
+                multipleOffenses.style.display = 'none';
+                offenseType.value = '';
+                quantity.value = 1;
+                officers.value = 1;
+                offenseDetails.innerHTML = '';
+                calculationDetails.style.display = 'none';
+            }
+            
+            // Event listeners
+            addOffenseBtn.addEventListener('click', addOffense);
+            calculateBtn.addEventListener('click', calculateCompound);
+            resetBtn.addEventListener('click', resetCalculator);
+            
+            // Recalculate when officers number changes
+            officers.addEventListener('change', function() {
+                if (selectedOffenses.length > 0) {
+                    calculateCompound();
+                }
+            });
+            
+            // Make removeOffense function available globally
+            window.removeOffense = removeOffense;
+        });
+    </script>
+</body>
+</html>
