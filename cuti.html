@@ -8,87 +8,268 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary-color: #2C3E50;
+            --secondary-color: #3B4F68;
+            --accent-color: #3498DB;
+            --success-color: #2ECC71;
+            --danger-color: #E74C3C;
+            --info-color: #3498DB;
+            --dark-color: #1F2D3D;
+        }
+        
         body {
-            background-color: #2C3E50;
+            background: linear-gradient(135deg, var(--primary-color), #1a2530);
             color: white;
             font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
         }
+        
         .container {
-            max-width: 900px;
-            margin-top: 50px;
-            background: #3B4F68;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+            max-width: 1000px;
+            margin-top: 30px;
+            margin-bottom: 50px;
+            background: rgba(59, 79, 104, 0.9);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.8s ease-out;
         }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
         h2 {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             font-weight: 600;
+            color: white;
+            position: relative;
+            padding-bottom: 15px;
         }
+        
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--accent-color);
+            border-radius: 3px;
+        }
+        
         table {
             border-collapse: collapse;
             width: 100%;
-            border-radius: 8px;
+            border-radius: 10px;
             overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
+        
         thead th {
-            background-color: #1F2D3D;
+            background-color: var(--dark-color);
             color: white;
+            text-align: center;
+            padding: 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.9rem;
+        }
+        
+        tbody td {
+            border: 1px solid rgba(255, 255, 255, 0.1);
             text-align: center;
             padding: 12px;
-            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
         }
-        tbody td {
-            border: 1px solid #ccc;
-            text-align: center;
-            padding: 10px;
-            font-size: 14px;
+        
+        tbody tr {
+            transition: all 0.3s ease;
         }
+        
+        tbody tr:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        tbody tr:hover td {
+            background-color: rgba(255, 255, 255, 0.05) !important;
+        }
+        
         .table-success {
-            background-color: #2ECC71 !important;
+            background-color: var(--success-color) !important;
             color: white;
         }
+        
         .table-danger {
-            background-color: #E74C3C !important;
+            background-color: var(--danger-color) !important;
             color: white;
         }
+        
         .table-info {
-            background-color: #3498DB !important;
+            background-color: var(--info-color) !important;
             color: white;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .loading-spinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--accent-color);
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .refresh-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--accent-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+        
+        .refresh-btn:hover {
+            transform: rotate(180deg) scale(1.1);
+            background: var(--success-color);
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+                margin-top: 20px;
+            }
+            
+            thead th, tbody td {
+                padding: 8px;
+                font-size: 0.8rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Senarai Cuti</h2>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Nama</th>
-                    <th>Unit</th>
-                    <th>Pangkat</th>
-                    <th>Tarikh Mula</th>
-                    <th>Tarikh Akhir</th>
-                    <th>Tempoh (hari)</th>
-                    <th>Sebab</th>
-                </tr>
-            </thead>
-            <tbody id="cutiTable"></tbody>
-        </table>
+    <div class="container animate__animated animate__fadeIn">
+        <h2><i class="fas fa-calendar-alt me-2"></i>Senarai Cuti</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th><i class="fas fa-user me-2"></i>Nama</th>
+                        <th><i class="fas fa-building me-2"></i>Unit</th>
+                        <th><i class="fas fa-star me-2"></i>Pangkat</th>
+                        <th><i class="fas fa-calendar-start me-2"></i>Tarikh Mula</th>
+                        <th><i class="fas fa-calendar-end me-2"></i>Tarikh Akhir</th>
+                        <th><i class="fas fa-clock me-2"></i>Tempoh</th>
+                        <th><i class="fas fa-info-circle me-2"></i>Sebab</th>
+                    </tr>
+                </thead>
+                <tbody id="cutiTable">
+                    <tr>
+                        <td colspan="7" class="text-center">
+                            <div class="loading-spinner">
+                                <div class="spinner"></div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="footer">
+            Sistem Senarai Cuti &copy; 2025 | Dikemaskini: <span id="updateTime"></span>
+        </div>
+    </div>
+
+    <div class="refresh-btn animate__animated animate__bounceIn" id="refreshBtn" title="Muat Semula">
+        <i class="fas fa-sync-alt"></i>
     </div>
 
     <script>
         const jsonBinUrl = "https://api.jsonbin.io/v3/b/67e160888561e97a50f1e24d";
         const apiKey = "$2a$10$KuvaRPtUxYiFJythCMsN/OBN4TNbN7Nt7ZChz5KPHaiIpdTbiF.kG";
 
+        // Format date to DD/MM/YYYY
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const day = date.getDate().toString().padStart(2, '0');
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const year = date.getFullYear();
+            return `${day}/${month}/${year}`;
+        }
+
+        // Update timestamp
+        function updateTimestamp() {
+            const now = new Date();
+            const options = { 
+                day: '2-digit', 
+                month: '2-digit', 
+                year: 'numeric', 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit' 
+            };
+            document.getElementById('updateTime').textContent = now.toLocaleDateString('ms-MY', options);
+        }
+
         async function getData() {
-            const response = await fetch(jsonBinUrl + "/latest", {
-                headers: { "X-Master-Key": apiKey }
-            });
-            const data = await response.json();
-            return data.record || [];
+            try {
+                const response = await fetch(jsonBinUrl + "/latest", {
+                    headers: { "X-Master-Key": apiKey }
+                });
+                const data = await response.json();
+                return data.record || [];
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                return [];
+            }
         }
 
         async function loadTable() {
@@ -96,34 +277,78 @@
             let rows = "";
             const today = new Date();
 
-            cutiData.forEach((cuti) => {
-                const startDate = new Date(cuti.tarikhMula);
-                const endDate = new Date(cuti.tarikhAkhir);
-                const duration = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
-                let rowClass = "";
-
-                if (today > endDate) {
-                    rowClass = "table-danger"; // Cuti telah tamat
-                } else if (today >= startDate && today <= endDate) {
-                    rowClass = "table-success"; // Cuti sedang berlangsung
-                } else if (today < startDate) {
-                    rowClass = "table-info"; // Cuti akan datang
-                }
-
-                rows += `<tr class="${rowClass}">
-                    <td>${cuti.nama}</td>
-                    <td>${cuti.unit}</td>
-                    <td>${cuti.pangkat}</td>
-                    <td>${cuti.tarikhMula}</td>
-                    <td>${cuti.tarikhAkhir}</td>
-                    <td>${duration}</td>
-                    <td>${cuti.sebab}</td>
+            if (cutiData.length === 0) {
+                rows = `<tr>
+                    <td colspan="7" class="text-center text-danger">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Tiada data cuti ditemui
+                    </td>
                 </tr>`;
-            });
+            } else {
+                cutiData.forEach((cuti) => {
+                    const startDate = new Date(cuti.tarikhMula);
+                    const endDate = new Date(cuti.tarikhAkhir);
+                    const duration = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+                    let rowClass = "";
+                    let statusText = "";
+                    let statusIcon = "";
+
+                    if (today > endDate) {
+                        rowClass = "table-danger";
+                        statusText = "Tamat";
+                        statusIcon = "fas fa-calendar-times";
+                    } else if (today >= startDate && today <= endDate) {
+                        rowClass = "table-success";
+                        statusText = "Berlangsung";
+                        statusIcon = "fas fa-calendar-check";
+                    } else if (today < startDate) {
+                        rowClass = "table-info";
+                        statusText = "Akan Datang";
+                        statusIcon = "fas fa-calendar-day";
+                    }
+
+                    rows += `<tr class="${rowClass} animate__animated animate__fadeIn">
+                        <td>${cuti.nama}</td>
+                        <td>${cuti.unit}</td>
+                        <td>${cuti.pangkat}</td>
+                        <td>${formatDate(cuti.tarikhMula)}</td>
+                        <td>${formatDate(cuti.tarikhAkhir)}</td>
+                        <td>${duration} <small>hari</small></td>
+                        <td>${cuti.sebab}</td>
+                    </tr>`;
+                });
+            }
+            
             document.getElementById("cutiTable").innerHTML = rows;
+            updateTimestamp();
         }
 
+        // Initial load
         loadTable();
+        
+        // Refresh button
+        document.getElementById('refreshBtn').addEventListener('click', () => {
+            const btn = document.getElementById('refreshBtn');
+            btn.classList.add('animate__rotateIn');
+            
+            // Clear table and show loading
+            document.getElementById("cutiTable").innerHTML = `
+                <tr>
+                    <td colspan="7" class="text-center">
+                        <div class="loading-spinner">
+                            <div class="spinner"></div>
+                        </div>
+                    </td>
+                </tr>
+            `;
+            
+            // Reload data
+            setTimeout(() => {
+                loadTable();
+                btn.classList.remove('animate__rotateIn');
+                btn.classList.add('animate__pulse');
+                setTimeout(() => btn.classList.remove('animate__pulse'), 1000);
+            }, 500);
+        });
     </script>
 </body>
 </html>
