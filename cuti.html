@@ -19,6 +19,7 @@
             --danger-color: #E74C3C;
             --info-color: #3498DB;
             --dark-color: #1F2D3D;
+            --warning-color: #F39C12;
         }
         
         body {
@@ -29,7 +30,7 @@
         }
         
         .container {
-            max-width: 1000px;
+            max-width: 1100px;
             margin-top: 30px;
             margin-bottom: 50px;
             background: rgba(59, 79, 104, 0.9);
@@ -107,28 +108,44 @@
         }
         
         .table-success {
-            background-color: var(--success-color) !important;
-            color: white;
+            background-color: rgba(46, 204, 113, 0.2) !important;
+            border-left: 4px solid var(--success-color);
         }
         
         .table-danger {
-            background-color: var(--danger-color) !important;
-            color: white;
+            background-color: rgba(231, 76, 60, 0.2) !important;
+            border-left: 4px solid var(--danger-color);
         }
         
         .table-info {
-            background-color: var(--info-color) !important;
-            color: white;
+            background-color: rgba(52, 152, 219, 0.2) !important;
+            border-left: 4px solid var(--info-color);
         }
         
         .status-badge {
-            display: inline-block;
-            padding: 4px 8px;
+            display: inline-flex;
+            align-items: center;
+            padding: 5px 10px;
             border-radius: 20px;
             font-size: 0.75rem;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+        }
+        
+        .badge-upcoming {
+            background-color: var(--info-color);
+            color: white;
+        }
+        
+        .badge-ongoing {
+            background-color: var(--success-color);
+            color: white;
+        }
+        
+        .badge-completed {
+            background-color: var(--danger-color);
+            color: white;
         }
         
         .loading-spinner {
@@ -183,6 +200,89 @@
             color: rgba(255, 255, 255, 0.6);
         }
         
+        .filter-section {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .filter-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .filter-control {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: none;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-control:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .filter-control:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px var(--accent-color);
+        }
+        
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            color: white;
+        }
+        
+        .filter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .filter-btn.active {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn-all {
+            background-color: var(--primary-color);
+        }
+        
+        .btn-upcoming {
+            background-color: var(--info-color);
+        }
+        
+        .btn-ongoing {
+            background-color: var(--success-color);
+        }
+        
+        .btn-completed {
+            background-color: var(--danger-color);
+        }
+        
         @media (max-width: 768px) {
             .container {
                 padding: 15px;
@@ -193,12 +293,74 @@
                 padding: 8px;
                 font-size: 0.8rem;
             }
+            
+            .filter-section {
+                flex-direction: column;
+            }
+            
+            .filter-buttons {
+                justify-content: center;
+            }
         }
-    </style>
+    
+.filter-control option {
+    background-color: #2C3E50;
+    color: white;
+}
+
+</style>
 </head>
 <body>
     <div class="container animate__animated animate__fadeIn">
         <h2><i class="fas fa-calendar-alt me-2"></i>Senarai Cuti</h2>
+        
+        <div class="filter-section">
+            <div class="filter-group">
+                <label class="filter-label"><i class="fas fa-filter me-1"></i>Filter Status</label>
+                <div class="filter-buttons">
+                    <button class="filter-btn btn-all active" data-filter="all">
+                        <i class="fas fa-list me-1"></i>Semua
+                    </button>
+                    <button class="filter-btn btn-upcoming" data-filter="upcoming">
+                        <i class="fas fa-calendar-day me-1"></i>Akan Datang
+                    </button>
+                    <button class="filter-btn btn-ongoing" data-filter="ongoing">
+                        <i class="fas fa-calendar-check me-1"></i>Berlangsung
+                    </button>
+                    <button class="filter-btn btn-completed" data-filter="completed">
+                        <i class="fas fa-calendar-times me-1"></i>Tamat
+                    </button>
+                </div>
+            </div>
+            
+            <div class="filter-group">
+                <label for="pangkatFilter" class="filter-label"><i class="fas fa-star me-1"></i>Pangkat</label>
+                <select id="pangkatFilter" class="filter-control">
+                    <option value="all">Semua Pangkat</option>
+                    <!-- Options will be populated by JavaScript -->
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="monthFilter" class="filter-label"><i class="fas fa-calendar me-1"></i>Bulan</label>
+                <select id="monthFilter" class="filter-control">
+                    <option value="all">Semua Bulan</option>
+                    <option value="1">Januari</option>
+                    <option value="2">Februari</option>
+                    <option value="3">Mac</option>
+                    <option value="4">April</option>
+                    <option value="5">Mei</option>
+                    <option value="6">Jun</option>
+                    <option value="7">Julai</option>
+                    <option value="8">Ogos</option>
+                    <option value="9">September</option>
+                    <option value="10">Oktober</option>
+                    <option value="11">November</option>
+                    <option value="12">Disember</option>
+                </select>
+            </div>
+        </div>
+        
         <div class="table-responsive">
             <table class="table table-bordered">
                 <thead>
@@ -210,11 +372,12 @@
                         <th><i class="fas fa-calendar-end me-2"></i>Tarikh Akhir</th>
                         <th><i class="fas fa-clock me-2"></i>Tempoh</th>
                         <th><i class="fas fa-info-circle me-2"></i>Sebab</th>
+                        <th><i class="fas fa-tag me-2"></i>Status</th>
                     </tr>
                 </thead>
                 <tbody id="cutiTable">
                     <tr>
-                        <td colspan="7" class="text-center">
+                        <td colspan="8" class="text-center">
                             <div class="loading-spinner">
                                 <div class="spinner"></div>
                             </div>
@@ -235,6 +398,7 @@
     <script>
         const jsonBinUrl = "https://api.jsonbin.io/v3/b/67e160888561e97a50f1e24d";
         const apiKey = "$2a$10$KuvaRPtUxYiFJythCMsN/OBN4TNbN7Nt7ZChz5KPHaiIpdTbiF.kG";
+        let allCutiData = [];
 
         // Format date to DD/MM/YYYY
         function formatDate(dateString) {
@@ -243,6 +407,15 @@
             const month = (date.getMonth() + 1).toString().padStart(2, '0');
             const year = date.getFullYear();
             return `${day}/${month}/${year}`;
+        }
+
+        // Get month name in Malay
+        function getMonthName(month) {
+            const months = [
+                "Januari", "Februari", "Mac", "April", "Mei", "Jun",
+                "Julai", "Ogos", "September", "Oktober", "November", "Disember"
+            ];
+            return months[month - 1] || '';
         }
 
         // Update timestamp
@@ -272,41 +445,101 @@
             }
         }
 
-        async function loadTable() {
-            const cutiData = await getData();
-            let rows = "";
-            const today = new Date();
+        // Populate pangkat filter options
+        function populatePangkatFilter(cutiData) {
+            const pangkatFilter = document.getElementById('pangkatFilter');
+            const pangkatSet = new Set();
+            
+            cutiData.forEach(cuti => {
+                if (cuti.pangkat) {
+                    pangkatSet.add(cuti.pangkat);
+                }
+            });
+            
+            // Clear existing options except the first one
+            while (pangkatFilter.options.length > 1) {
+                pangkatFilter.remove(1);
+            }
+            
+            // Add unique pangkat options
+            const sortedPangkat = Array.from(pangkatSet).sort();
+            sortedPangkat.forEach(pangkat => {
+                const option = document.createElement('option');
+                option.value = pangkat;
+                option.textContent = pangkat;
+                pangkatFilter.appendChild(option);
+            });
+        }
 
-            if (cutiData.length === 0) {
+        // Filter and display table
+        function filterAndDisplayTable() {
+            const statusFilter = document.querySelector('.filter-btn.active').dataset.filter;
+            const pangkatFilter = document.getElementById('pangkatFilter').value;
+            const monthFilter = document.getElementById('monthFilter').value;
+            const today = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Kuala_Lumpur" }));
+            
+            let rows = "";
+            
+            if (allCutiData.length === 0) {
                 rows = `<tr>
-                    <td colspan="7" class="text-center text-danger">
+                    <td colspan="8" class="text-center text-danger">
                         <i class="fas fa-exclamation-triangle me-2"></i>Tiada data cuti ditemui
                     </td>
                 </tr>`;
             } else {
-                cutiData.forEach((cuti) => {
+                allCutiData.forEach((cuti) => {
                     const startDate = new Date(cuti.tarikhMula);
                     const endDate = new Date(cuti.tarikhAkhir);
+                    const startMonth = startDate.getMonth() + 1;
+                    const endMonth = endDate.getMonth() + 1;
                     const duration = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
-                    let rowClass = "";
+                    
+                    // Determine status
+                    let status = "";
+                    endDate.setHours(23, 59, 59, 999); // Tamat hari itu
+                    if (today > endDate) {
+                        status = "completed";
+                    } else if (today >= startDate && today <= endDate) {
+                        status = "ongoing";
+                    } else if (today < startDate) {
+                        status = "upcoming";
+                    }
+                    
+                    // Apply filters
+                    if (statusFilter !== 'all' && status !== statusFilter) return;
+                    if (pangkatFilter !== 'all' && cuti.pangkat !== pangkatFilter) return;
+                    if (monthFilter !== 'all') {
+                        const monthNum = parseInt(monthFilter);
+                        if (!(startMonth === monthNum || endMonth === monthNum || 
+                             (startMonth < monthNum && endMonth > monthNum))) {
+                            return;
+                        }
+                    }
+                    
+                    // Status display
                     let statusText = "";
                     let statusIcon = "";
-
-                    if (today > endDate) {
+                    let statusClass = "";
+                    let rowClass = "";
+                    
+                    if (status === "completed") {
                         rowClass = "table-danger";
                         statusText = "Tamat";
                         statusIcon = "fas fa-calendar-times";
-                    } else if (today >= startDate && today <= endDate) {
+                        statusClass = "badge-completed";
+                    } else if (status === "ongoing") {
                         rowClass = "table-success";
                         statusText = "Berlangsung";
                         statusIcon = "fas fa-calendar-check";
-                    } else if (today < startDate) {
+                        statusClass = "badge-ongoing";
+                    } else if (status === "upcoming") {
                         rowClass = "table-info";
                         statusText = "Akan Datang";
                         statusIcon = "fas fa-calendar-day";
+                        statusClass = "badge-upcoming";
                     }
-
-                    rows += `<tr class="${rowClass} animate__animated animate__fadeIn">
+                    
+                    rows += `<tr class="${rowClass} animate__animated animate__fadeIn" data-status="${status}" data-pangkat="${cuti.pangkat}" data-month-start="${startMonth}" data-month-end="${endMonth}">
                         <td>${cuti.nama}</td>
                         <td>${cuti.unit}</td>
                         <td>${cuti.pangkat}</td>
@@ -314,12 +547,57 @@
                         <td>${formatDate(cuti.tarikhAkhir)}</td>
                         <td>${duration} <small>hari</small></td>
                         <td>${cuti.sebab}</td>
+                        <td>
+                            <span class="status-badge ${statusClass}">
+                                <i class="${statusIcon} me-1"></i>${statusText}
+                            </span>
+                        </td>
                     </tr>`;
                 });
             }
             
+            // If no rows after filtering
+            if (!rows) {
+                rows = `<tr>
+                    <td colspan="8" class="text-center text-warning">
+                        <i class="fas fa-info-circle me-2"></i>Tiada cuti ditemui untuk filter yang dipilih
+                    </td>
+                </tr>`;
+            }
+            
             document.getElementById("cutiTable").innerHTML = rows;
+        }
+
+        async function loadTable() {
+            allCutiData = await getData();
+            populatePangkatFilter(allCutiData);
+            filterAndDisplayTable();
             updateTimestamp();
+            
+            // Initialize filter functionality
+            initFilters();
+        }
+
+        function initFilters() {
+            // Status filter buttons
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Update active button
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    
+                    // Apply filters
+                    filterAndDisplayTable();
+                });
+            });
+            
+            // Pangkat filter
+            document.getElementById('pangkatFilter').addEventListener('change', filterAndDisplayTable);
+            
+            // Month filter
+            document.getElementById('monthFilter').addEventListener('change', filterAndDisplayTable);
         }
 
         // Initial load
@@ -333,7 +611,7 @@
             // Clear table and show loading
             document.getElementById("cutiTable").innerHTML = `
                 <tr>
-                    <td colspan="7" class="text-center">
+                    <td colspan="8" class="text-center">
                         <div class="loading-spinner">
                             <div class="spinner"></div>
                         </div>
