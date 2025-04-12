@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Halaman Utama</title>
-    <link rel="icon" href="d6.png" type="image/x-icon">
+    <title>D6 - Sistem Pengurusan</title>
+    <link rel="icon" href="img/d6.png" type="image/x-icon">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
@@ -53,11 +53,11 @@
 
         .btn-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(4, minmax(200px, 1fr));
+            gap: 20px;
             width: 100%;
-            max-width: 800px;
-            margin-top: 30px;
+            max-width: 1000px;
+            margin: 30px auto;
         }
 
         .option {
@@ -66,13 +66,15 @@
             align-items: center;
             text-decoration: none;
             color: white;
-            font-size: 1.2em;
+            font-size: 1.1em;
             transition: all 0.3s ease;
-            padding: 25px;
+            padding: 20px;
             border-radius: 15px;
             background: var(--card-bg);
             backdrop-filter: blur(10px);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            min-height: 180px;
+            justify-content: center;
         }
 
         .option:hover {
@@ -82,25 +84,61 @@
         }
 
         .option img {
-            width: 80px;
-            height: 80px;
+            width: 70px;
+            height: 70px;
             margin-bottom: 15px;
             object-fit: contain;
+            filter: brightness(0) invert(1);
         }
 
         .label {
-            font-size: 1em;
-            font-weight: 600;
+            font-size: 0.95em;
+            font-weight: 500;
+            text-align: center;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
+            line-height: 1.4;
         }
 
-        /* Admin Login Section */
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .btn-container {
+                grid-template-columns: repeat(2, 1fr);
+                max-width: 600px;
+            }
+            
+            .typewriter {
+                font-size: 2em;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .btn-container {
+                grid-template-columns: 1fr;
+                max-width: 300px;
+            }
+            
+            .typewriter {
+                font-size: 1.5em;
+            }
+            
+            .option {
+                min-height: 150px;
+                padding: 15px;
+            }
+            
+            .option img {
+                width: 60px;
+                height: 60px;
+            }
+        }
+
+        /* Admin Section (Sama seperti asal) */
         .admin-section {
             margin-top: 50px;
             text-align: center;
         }
-
+        
         .admin-btn {
             background: transparent;
             color: white;
@@ -111,77 +149,16 @@
             transition: all 0.3s;
             font-size: 0.9em;
         }
-
+        
         .admin-btn:hover {
             background: rgba(255, 255, 255, 0.1);
             border-color: rgba(255, 255, 255, 0.5);
-        }
-
-        .login-form {
-            display: none;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 30px;
-            border-radius: 10px;
-            max-width: 400px;
-            margin: 20px auto 0;
-            backdrop-filter: blur(5px);
-        }
-
-        .login-form.active {
-            display: block;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-            text-align: left;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 0.9em;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 10px 15px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 5px;
-            color: white;
-        }
-
-        .submit-btn {
-            background: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px 25px;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
-            transition: background 0.3s;
-        }
-
-        .submit-btn:hover {
-            background: #45a049;
-        }
-
-        @media (max-width: 768px) {
-            .typewriter {
-                font-size: 1.8em;
-            }
-            
-            .btn-container {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
         }
     </style>
 </head>
 <body>
     <div class="header">
         <h1 class="typewriter">Selamat Datang ke Sistem D6</h1>
-        
     </div>
 
     <div class="btn-container">
@@ -197,10 +174,10 @@
             <img src="anggota.png" alt="Saman">
             <div class="label">Sistem Saman</div>
         </a>
+        <a href="operasi.html" class="option">
+            <img src="aktiviti.png" alt="Operasi">
+            <div class="label">Aktiviti dan Operasi</div>
+        </a>
     </div>
-
-
-
-
 </body>
 </html>
